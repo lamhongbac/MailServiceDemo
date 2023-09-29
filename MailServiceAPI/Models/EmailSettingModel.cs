@@ -4,6 +4,7 @@
     {
         public EmailSettingModel()
         {
+            Code = "SS";
             Mail = "app.sasin@gmail.com";
             DisplayName = "Sasin Việt Nam ";
             Password = "Hello@123";
