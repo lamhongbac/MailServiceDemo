@@ -2,29 +2,22 @@
 using MailServiceAPI.Logic;
 using MailServiceAPI.Models;
 using MailServiceDemo.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
-namespace MailServiceDemo.Controllers
+namespace MailServiceAPI.Controllers
 {
-    public class SendMailDemoController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SendMailController : ControllerBase
     {
         ISendMailService sendmailservice;
-        public SendMailDemoController(ISendMailService sendmailservice)
+        public SendMailController(ISendMailService sendmailservice)
         {
             this.sendmailservice = sendmailservice;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
-        public IActionResult SendMail()
-        {
-            SendMailModel model = new SendMailModel();
-            return View(model);
-        }
-        [HttpPost]
-        public async Task<IActionResult> SendMail(SendMailModel model)
+        public async Task<bool> SendGMail (SendMailModel model)
         {
             MailContent content = new MailContent
             {
@@ -34,7 +27,7 @@ namespace MailServiceDemo.Controllers
             };
 
             await sendmailservice.SendMail(content);
-            return View(model);
+            return true;
         }
     }
 }

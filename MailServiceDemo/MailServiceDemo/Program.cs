@@ -1,11 +1,15 @@
-using MailServiceAPI.Interfaces;
+﻿using MailServiceAPI.Interfaces;
 using MailServiceAPI.Logic;
+using MailServiceAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var mailsettings = builder.Configuration.GetSection("EmailSettings");  // đọc config
+builder.Services.Configure<EmailSettingModel>(mailsettings);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<ISendMailService, SendMailService>();
+// Đăng ký SendMailService với kiểu Transient, mỗi lần gọi dịch
+// vụ ISendMailService một đới tượng SendMailService tạo ra (đã inject config)
+builder.Services.AddTransient<ISendMailService, SendMailService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,6 +29,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=SendMailDemo}/{action=SendMail}/{id?}");
 
 app.Run();

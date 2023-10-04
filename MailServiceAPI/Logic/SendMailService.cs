@@ -19,7 +19,7 @@ namespace MailServiceAPI.Logic
         {
             mailSettings = _mailSettings.Value;
             logger = _logger;
-            logger.LogInformation("Create SendMailService");
+            //logger.LogInformation("Create SendMailService");
         }
 
         // Gửi email, theo nội dung trong mailContent
@@ -42,8 +42,10 @@ namespace MailServiceAPI.Logic
             try
             {
                 smtp.Connect(mailSettings.Host, mailSettings.Port, SecureSocketOptions.StartTls);
-                smtp.Authenticate(mailSettings.Mail, mailSettings.Password);
+                smtp.Authenticate(mailSettings.Mail, mailSettings.Password );
+                
                 await smtp.SendAsync(email);
+                smtp.Disconnect(true);
             }
             catch (Exception ex)
             {
