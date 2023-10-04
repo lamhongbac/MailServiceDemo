@@ -17,6 +17,7 @@ namespace MailServiceAPI.Controllers
         {
             this.sendmailservice = sendmailservice;
         }
+        [Route("SendGMail")]
         public async Task<bool> SendGMail (SendMailModel model)
         {
             MailContent content = new MailContent
